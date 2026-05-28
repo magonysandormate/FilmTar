@@ -11,3 +11,5 @@ void Dokumentum::print(std::ostream& os) const{
 void Dokumentum::save(std::ostream& os) const{
     os << "1;" << getId() << ";" << getCim() << ";" << getHossz() << ";" << getEv() << ";" << leiras << std::endl;
 }
+
+Dokumentum::~Dokumentum(){}

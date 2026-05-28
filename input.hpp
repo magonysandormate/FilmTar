@@ -16,13 +16,14 @@
  * egészen addig, amíg érvényes értéket nem kap.
  */
 class InputHandler {
+public:
     /**
      * @brief Egész számot olvas és validál a megadott folyamról.
      * Addig ismétli a bekérést, amíg valós numerikus értéket nem kap.
      * @param is A bemeneti folyam.
      * @return A beolvasott egész szám.
      */
-    int readInt(std::istream& is);
+    static int readInt(std::istream& is, std::ostream& os);
  
     /**
      * @brief Szöveget olvas és validál a megadott folyamról.
@@ -30,15 +31,8 @@ class InputHandler {
      * @param is A bemeneti folyam.
      * @return A beolvasott, nem üres szöveg.
      */
-    std::string readString(std::istream& is);
- 
-public:
- 
-    /**
-     * @brief InputHandler alapértelmezett konstruktora.
-     */
-    InputHandler();
- 
+    static std::string readString(std::istream& is, std::ostream& os);
+
     /**
      * @brief Interaktívan beolvassa egy film adatait a megadott folyamról.
      * Bekéri a típust, majd az ahhoz szükséges összes adatmezőt validálással.
@@ -47,7 +41,7 @@ public:
      * @param is A bemeneti folyam.
      * @return Mutató az újonnan létrehozott Film objektumra.
      */
-    Film* readFilm(std::istream& is);
+    static Film* readFilm(std::istream& is, std::ostream& os, int nextId);
 };
  
 #endif

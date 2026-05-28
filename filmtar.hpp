@@ -19,40 +19,50 @@
 class FilmTar {
     LinkedList<Film*>* head;
     int size;
-
+    bool owner; ///true -> destruktor törli a Film* objektumokat
+    int maxId;
     friend std::ostream& operator<<(std::ostream& os, const FilmTar& ft);
-public:
  
+    FilmTar(bool owner);  ///belső konstruktor, nem tulajdonos tárakhoz
+ 
+public:
     /**
-     * @brief FilmTar alapértelmezett konstruktora.
-     * Üres gyűjteményt hoz létre (head = NULL, size = 0).
+     * @brief Alapértelmezett konstruktor. A tar tulajdonosa lesz a filmeknek.
      */
     FilmTar();
+
+    /**
+     * @brief Másoló konstruktor. Új tárolót hoz létre, ami nem lesz tulajdonosa a filmeknek.
+     * Átveszi az eredeti tároló méretét és a számozáshoz szükséges legmagasabb ID azonosítót.
+     * @param other A másolandó FilmTar objektum referenciája.
+     */
+    FilmTar(const FilmTar&);
+
+    /**
+     * @brief Értékadó operátor. Másolatot készít egy létező tárolóról.
+     * Lemásolja a belső állapotot és az ID sorszámozás aktuális állását.
+     * @param other A másolandó FilmTar objektum referenciája.
+     * @return Referencia az aktuális (módosított) FilmTar objektumra.
+     */
+    FilmTar& operator=(const FilmTar&);
  
     /**
      * @brief Új filmet fűz a lista végére.
      * @param f Mutató a hozzáadandó Film objektumra.
-     *          A FilmTar nem veszi át az objektum tulajdonjogát.
      */
     void add(Film* f);
  
     /**
      * @brief Megkeresi és eltávolítja az adott azonosítójú filmet.
-     * Kiveszi a filmet a láncolt listából, és felszabadítja
-     * a Film objektumot és a listaelemet.
-     * A size értékét eggyel csökkenti.
      * @param id Az eltávolítandó film egyedi azonosítója.
      */
     void removeById(int id);
  
     /**
      * @brief Cím alapján megkeresi az egyező filmeket.
-     * Minden elemre meghívja a Film::matches() metódust,
-     * és az egyező mutatókat átmásolja egy új, heap-en
-     * allokált FilmTar objektumba (klónozás nélkül).
+     * A visszaadott FilmTar NEM tulajdonosa a mutatóknak (nem törli őket).
      * @param s A keresett cím vagy annak részlete.
      * @return Mutató az egyező filmeket tartalmazó új FilmTar-ra.
-     *         A visszakapott objektum felszabadítása a hívó felelőssége.
      */
     FilmTar* findByTitle(const std::string& s) const;
  
@@ -65,34 +75,37 @@ public:
     Film* operator[](int i) const;
  
     /**
-     * @brief CSV fájlból betölti a filmeket és visszaad egy feltöltött FilmTar-t.
-     * Ha a fájl nem létezik, létrehozza, és üres FilmTar-t ad vissza.
-     * Soronként beolvassa az adatokat, a típusazonosító alapján
-     * (0: Csaladi, 1: Dokumentum) példányosítja a megfelelő leszármazottat,
-     * és hozzáadja a gyűjteményhez.
+     * @brief CSV fájlból betölti a filmeket (heap-en allokált FilmTar).
      * @param file A CSV fájl elérési útja.
-     * @return A feltöltött FilmTar objektum.
+     * @return Mutató a feltöltött FilmTar objektumra.
      */
-    static FilmTar loadFromCSV(const std::string& file);
+    static FilmTar* loadFromCSV(const std::string& file);
+ 
+    /**
+     * @brief CSV fájlba menti az összes filmet.
+     * @param file A CSV fájl elérési útja.
+     */
+    void saveToCSV(const std::string& file) const;
  
     /**
      * @brief Visszaadja a gyűjteményben tárolt filmek számát.
-     * @return A filmek száma.
      */
     int getSize() const { return size; }
+
+    int getNextId() const { return maxId + 1; }
  
     /**
-     * @brief Destruktor, felszabadítja a teljes láncolt listát és a Film objektumokat.
+     * @brief Destruktor, felszabadítja a láncolt listát és (ha owner) a Film objektumokat.
      */
     ~FilmTar();
 };
  
 /**
- * @brief Kiírja a FilmTar összes filmjét a megadott folyamra.
- * Minden elemre meghívja a film->print(os) metódust.
- * @param os A kimeneti folyam.
- * @param ft A kiírandó FilmTar objektum.
- * @return Referencia a kimeneti folyamra (láncolhatóság érdekében).
+ * @brief Globális inserter operátor a filmtár tartalmának kiírására.
+ * Sorban meghívja a gyűjteményben lévő összes film saját print() függvényét.
+ * @param os A kimeneti adatfolyam.
+ * @param ft A kiírandó filmtár objektum.
+ * @return Referencia a kimeneti adatfolyamra.
  */
 std::ostream& operator<<(std::ostream& os, const FilmTar& ft);
  

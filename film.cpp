@@ -8,10 +8,10 @@ bool Film::matches(const std::string& s) const{
     std::string cimLower = cim;
     std::string sLower = s;
 
-    for (int i = 0; i < cimLower.size(); i++)
+    for (size_t i = 0; i < cimLower.size(); i++)
         cimLower[i] = tolower(cimLower[i]);
 
-    for (int i = 0; i < sLower.size(); i++)
+    for (size_t i = 0; i < sLower.size(); i++)
         sLower[i] = tolower(sLower[i]);
         
     return cimLower.find(sLower) != std::string::npos;

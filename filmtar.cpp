@@ -3,42 +3,77 @@
 #include "dokumentum.hpp"
 #include <fstream>
 #include <sstream>
+#include <stdexcept>
 
-FilmTar::FilmTar() : head(NULL), size(0) {}
+FilmTar::FilmTar() : head(NULL), size(0), owner(true), maxId(0) {}
+FilmTar::FilmTar(bool own) : head(NULL), size(0), owner(own), maxId(0) {}
+
+FilmTar::FilmTar(const FilmTar& other) : head(NULL), size(0), owner(false), maxId(other.maxId) {
+    LinkedList<Film*>* current = other.head;
+    while (current != NULL) {
+        this->add(current->data);
+        current = current->next;
+    }
+}
+
+FilmTar& FilmTar::operator=(const FilmTar& other) {
+    if (this != &other) {
+        // Régi elemek felszabadítása
+        LinkedList<Film*>* current = head;
+        while (current != NULL) {
+            LinkedList<Film*>* next = current->next;
+            if (owner) delete current->data;
+            delete current;
+            current = next;
+        }
+        head = NULL;
+        size = 0;
+        owner = false; // A másolatok alapesetben nem tulajdonosok a specifikáció szerint
+        maxId = other.maxId;
+
+        // Új elemek átvétele
+        LinkedList<Film*>* src = other.head;
+        while (src != NULL) {
+            this->add(src->data);
+            src = src->next;
+        }
+    }
+    return *this;
+}
 
 void FilmTar::add(Film* f){
     if (head == NULL) {
         head = new LinkedList<Film*>(f);
     } else {
         LinkedList<Film*>* current = head;
-        while (current->next != NULL) {
-            current = current->next;
-        }
+        while (current->next != NULL) current = current->next;
         current->next = new LinkedList<Film*>(f);
     }
     size++;
+
+    if(f->getId() > maxId){
+        maxId = f->getId();
+    }
 }
 
 void FilmTar::removeById(int id){
     if (head == NULL) return;
-
     if (head->data->getId() == id) {
         LinkedList<Film*>* toDelete = head;
         head = head->next;
         toDelete->next = NULL;
-        delete toDelete->data;
+        if (owner) delete toDelete->data;
         delete toDelete;
         size--;
         return;
     }
-
     LinkedList<Film*>* current = head;
     while (current->next != NULL) {
         if (current->next->data->getId() == id) {
             LinkedList<Film*>* toDelete = current->next;
             current->next = toDelete->next;
             toDelete->next = NULL;
-            delete toDelete->data;
+            if (owner) delete toDelete->data;
             delete toDelete;
             size--;
             return;
@@ -48,23 +83,19 @@ void FilmTar::removeById(int id){
 }
 
 FilmTar* FilmTar::findByTitle(const std::string& s) const{
-    FilmTar* result = new FilmTar();
+    FilmTar* result = new FilmTar(false); // nem tulajdonos
     LinkedList<Film*>* current = head;
     while (current != NULL) {
-        if (current->data->matches(s)) {
-            result->add(current->data);
-        }
+        if (current->data->matches(s)) result->add(current->data);
         current = current->next;
     }
     return result;
 }
 
 Film* FilmTar::operator[](int i) const{
+    if (i < 0 || i >= size) throw std::out_of_range("Index out of range");
     LinkedList<Film*>* current = head;
-    for (int j = 0; j < i; j++) {
-        if (current == NULL) return NULL;
-        current = current->next;
-    }
+    for (int j = 0; j < i; j++) current = current->next;
     return current->data;
 }
 
@@ -77,64 +108,49 @@ std::ostream& operator<<(std::ostream& os, const FilmTar& ft){
     return os;
 }
 
-FilmTar FilmTar::loadFromCSV(const std::string& file) {
-    FilmTar tar;
+FilmTar* FilmTar::loadFromCSV(const std::string& file) {
+    FilmTar* tar = new FilmTar();
     std::ifstream f(file.c_str());
-
     if (!f.is_open()) {
-        // Ha nem létezik, létrehozzuk és visszaadunk egy üres tárat
         std::ofstream letrehoz(file.c_str());
         return tar;
     }
-
     std::string sor;
     while (getline(f, sor)) {
         if (sor.empty()) continue;
-
         std::stringstream ss(sor);
         std::string token;
-
-        // Típus
-        getline(ss, token, ';');
-        int tipus = atoi(token.c_str());
-
-        // ID
-        getline(ss, token, ';');
-        int id = atoi(token.c_str());
-
-        // Cím
-        std::string cim;
-        getline(ss, cim, ';');
-
-        // Hossz
-        getline(ss, token, ';');
-        int hossz = atoi(token.c_str());
-
-        // Év
-        getline(ss, token, ';');
-        int ev = atoi(token.c_str());
-
+        getline(ss, token, ';'); int tipus = atoi(token.c_str());
+        getline(ss, token, ';'); int id = atoi(token.c_str());
+        std::string cim; getline(ss, cim, ';');
+        getline(ss, token, ';'); int hossz = atoi(token.c_str());
+        getline(ss, token, ';'); int ev = atoi(token.c_str());
         if (tipus == 0) {
-            // Korhatár
             getline(ss, token, ';');
-            int korhatar = atoi(token.c_str());
-            tar.add(new Csaladi(id, cim, hossz, ev, korhatar));
+            tar->add(new Csaladi(id, cim, hossz, ev, atoi(token.c_str())));
         } else {
-            // Leírás (maradék az egész, hogy a ; is beleférjen)
-            std::string leiras;
-            getline(ss, leiras);
-            tar.add(new Dokumentum(id, cim, hossz, ev, leiras));
+            std::string leiras; getline(ss, leiras);
+            tar->add(new Dokumentum(id, cim, hossz, ev, leiras));
         }
     }
-
     return tar;
+}
+
+void FilmTar::saveToCSV(const std::string& file) const {
+    std::ofstream f(file.c_str());
+    if (!f.is_open()) throw std::runtime_error("Nem sikerult megnyitni a fajlt menteshez.");
+    LinkedList<Film*>* current = head;
+    while (current != NULL) {
+        current->data->save(f);
+        current = current->next;
+    }
 }
 
 FilmTar::~FilmTar(){
     LinkedList<Film*>* current = head;
     while (current != NULL) {
         LinkedList<Film*>* next = current->next;
-        delete current->data;
+        if (owner) delete current->data;
         current->next = NULL;
         delete current;
         current = next;

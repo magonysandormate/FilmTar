@@ -1,0 +1,20 @@
+0;1;Az oroszlankiraly;88;1994;0
+0;2;E.T., a foldonkivuli;115;1982;6
+0;3;Harry Potter es a bolcsek kove;152;2001;12
+0;4;Toy Story - Jatekhaboru;81;1995;0
+0;5;Vissza a jovobe;116;1985;12
+0;6;Home Alone - Reszkessetek, betorok!;103;1990;12
+0;7;Oz, a csodak csodaja;102;1939;0
+0;8;Spirited Away - Chihiro Szellemorszagban;125;2001;6
+0;9;Paddington 2;103;2017;6
+0;0;Nemo nyomaban;100;2003;0
+1;11;Pingvinek vandorlasa;80;2005;A csaszarpingvinek lenyugozo teli utazasa az Antarktiszon.
+1;12;Samsara - A vilag eletre kel;102;2011;Csodalatos kepi utazas 25 orszag szent helyein es ipari videkein.
+1;13;Free Solo - Maszas kotelek nelkul;100;2018;Alex Honnold tortenelmi, biztositas nelkuli maszasa az El Capitan sziklafalon.
+1;14;My Octopus Teacher - Tanitom, a polip;85;2020;Egy filmes es egy vadon elo polip kulonleges kapcsolata a del-afrikai moszat erdoben.
+1;15;The Last Dance;500;2020;Michael Jordan es a Chicago Bulls 1997-98-as bajnoki szezonjanak kronikaja.
+1;16;Az utolso hivas;91;2007;Leonardo DiCaprio dokumentumfilmje a globalis felmelegedesrol es a kornyezetvedelemrol.
+1;17;Amy - Az Amy Winehouse-sztori;128;2015;A tragikusan fiatalon elhunyt enekesno elete es zenei karrierje.
+1;18;Searching for Sugar Man;86;2012;Ket del-afrikai rajongo nyomozasa a rejtelyes hetvenes evekbeli zenesz utan.
+1;19;Cosmos: Terido-odusszeia;550;2014;Neil deGrasse Tyson lebilincselo tudomanyos sorozata az univerzumrol.
+0;20;Tul a sovenyen;93;2001;6

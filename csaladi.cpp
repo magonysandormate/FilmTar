@@ -11,3 +11,5 @@ void Csaladi::print(std::ostream& os) const{
 void Csaladi::save(std::ostream& os) const{
     os << "0;" << getId() << ";" << getCim() << ";" << getHossz() << ";" << getEv() << ";" << korhatar << std::endl;
 }
+
+Csaladi::~Csaladi(){}
