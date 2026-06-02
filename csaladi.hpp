@@ -41,6 +41,12 @@ public:
      * @param os A kimeneti folyam.
      */
     void save(std::ostream& os) const override;
+
+    /**
+     * @brief Mély másolatot készít a Csaladi objektumról.
+     * @return Mutató az újonnan allokált Csaladi példányra.
+     */
+    Csaladi* clone() const override;
  
     /**
      * @brief Visszaadja a családi film korhatárát.

@@ -12,4 +12,8 @@ void Dokumentum::save(std::ostream& os) const{
     os << "1;" << getId() << ";" << getCim() << ";" << getHossz() << ";" << getEv() << ";" << leiras << std::endl;
 }
 
+Dokumentum* Dokumentum::clone() const {
+    return new Dokumentum(getId(), getCim(), getHossz(), getEv(), leiras);
+}
+
 Dokumentum::~Dokumentum(){}

@@ -12,4 +12,8 @@ void Csaladi::save(std::ostream& os) const{
     os << "0;" << getId() << ";" << getCim() << ";" << getHossz() << ";" << getEv() << ";" << korhatar << std::endl;
 }
 
+Csaladi* Csaladi::clone() const {
+    return new Csaladi(getId(), getCim(), getHossz(), getEv(), korhatar);
+}
+
 Csaladi::~Csaladi(){}

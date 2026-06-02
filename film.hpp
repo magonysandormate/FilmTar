@@ -49,6 +49,13 @@ public:
      * @param os A kimeneti folyam.
      */
     virtual void save(std::ostream& os) const = 0;
+
+    /**
+     * @brief Polimorf másoló metódus. Mély másolatot készít a leszármazott objektumról.
+     * A visszaadott objektum felszabadítása a hívó felelőssége.
+     * @return Mutató az újonnan allokált Film leszármazott példányra.
+     */
+    virtual Film* clone() const = 0;
  
     /**
      * @brief Két film egyenlőségét id alapján vizsgálja.

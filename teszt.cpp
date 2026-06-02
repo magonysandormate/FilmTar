@@ -170,5 +170,38 @@ int main() {
         EXPECT_EQ(21, masolat.getNextId());
     END
 
+    TEST(FilmTar, HatareseteIndex)
+        FilmTar tar;
+        tar.add(new Csaladi(1,"A",90,2000,0));
+        bool dob1 = false, dob2 = false;
+        try { tar[1];  } catch (const std::out_of_range&) { dob1 = true; }
+        try { tar[-1]; } catch (const std::out_of_range&) { dob2 = true; }
+        EXPECT_TRUE(dob1);
+        EXPECT_TRUE(dob2);
+    END
+
+    TEST(FilmTar, RemoveNemLetezo)
+        FilmTar tar;
+        EXPECT_NO_THROW(tar.removeById(0));
+    END
+
+    TEST(Film, SaveCSVNegativHossz)
+        const std::string f = "invalid_test.txt";
+        { std::ofstream o(f.c_str());
+        o << "0;99;Rossz Film;-500;2001;6\n"; }
+        FilmTar* t = FilmTar::loadFromCSV(f);
+        EXPECT_EQ(0, t->getSize());
+        delete t;
+    END
+
+    TEST(FilmTar, MelyMasolas)
+        FilmTar eredeti;
+        eredeti.add(new Csaladi(1,"Toy Story",81,1995,0));
+        FilmTar masolat(eredeti);
+        eredeti.removeById(1);
+        EXPECT_EQ(0, eredeti.getSize());
+        EXPECT_EQ(1, masolat.getSize());
+    END
+
     return 0;
 }

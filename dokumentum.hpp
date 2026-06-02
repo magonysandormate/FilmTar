@@ -40,6 +40,12 @@ public:
      * @param os A kimeneti folyam.
      */
     void save(std::ostream& os) const override;
+
+    /**
+     * @brief Mély másolatot készít a Dokumentum objektumról.
+     * @return Mutató az újonnan allokált Dokumentum példányra.
+     */
+    Dokumentum* clone() const override;
  
     /**
      * @brief Visszaadja a dokumentumfilm leírását.

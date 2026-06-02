@@ -17,4 +17,3 @@
 1;17;Amy - Az Amy Winehouse-sztori;128;2015;A tragikusan fiatalon elhunyt enekesno elete es zenei karrierje.
 1;18;Searching for Sugar Man;86;2012;Ket del-afrikai rajongo nyomozasa a rejtelyes hetvenes evekbeli zenesz utan.
 1;19;Cosmos: Terido-odusszeia;550;2014;Neil deGrasse Tyson lebilincselo tudomanyos sorozata az univerzumrol.
-0;20;Tul a sovenyen;93;2001;6

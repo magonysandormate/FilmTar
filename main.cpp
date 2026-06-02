@@ -19,6 +19,8 @@
 #include <csignal>
 #include <cstdlib>
 
+#ifndef CPORTA
+
 static const std::string ADATFAJL = "filmek.txt";
 static FilmTar* globalTar = NULL;
 
@@ -132,8 +134,6 @@ static void filmKeres(const FilmTar& tar) {
     }
     delete talalatok;
 }
-
-#ifdef CPORTA
 
 int main() {
     std::signal(SIGINT,  signalHandler);

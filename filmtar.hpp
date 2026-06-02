@@ -72,7 +72,9 @@ public:
      * @return Mutató a megfelelő Film objektumra.
      * @throws std::out_of_range Ha az index érvénytelen.
      */
-    Film* operator[](int i) const;
+    Film* operator[](int i);
+
+    const Film* operator[](int i) const;
  
     /**
      * @brief CSV fájlból betölti a filmeket (heap-en allokált FilmTar).

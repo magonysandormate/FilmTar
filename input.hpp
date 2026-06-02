@@ -42,6 +42,20 @@ public:
      * @return Mutató az újonnan létrehozott Film objektumra.
      */
     static Film* readFilm(std::istream& is, std::ostream& os, int nextId);
+
+    /**
+     * @brief Típuskód alapján létrehoz egy Film leszármazott objektumot.
+     * Heap-en allokált Film mutatót ad vissza, a visszakapott objektum
+     * felszabadítása a hívó felelőssége.
+     * @param tipus  A film típusa (0 = Csaladi, 1 = Dokumentum).
+     * @param id     Egyedi azonosító.
+     * @param cim    A film címe.
+     * @param hossz  Lejátszási idő percben.
+     * @param ev     Kiadási év.
+     * @param extra  Típusfüggő adat: Csaladi esetén a korhatár stringként, Dokumentum esetén a leírás.
+     * @return Mutató az újonnan létrehozott Film objektumra.
+     */
+    static Film* createFilm(int tipus, int id, const std::string& cim, int hossz, int ev, const std::string& extra);
 };
  
 #endif
