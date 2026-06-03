@@ -18,6 +18,7 @@
 #include <string>
 #include <csignal>
 #include <cstdlib>
+#include <limits>
 
 #ifndef CPORTA
 
@@ -58,7 +59,7 @@ static int bekerValasztas() {
     int v = 0;
     while (!(std::cin >> v)) {
         std::cin.clear();
-        std::cin.ignore(1000, '\n');
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         std::cout << "Szam kell: ";
     }
     return v;
