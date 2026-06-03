@@ -116,10 +116,8 @@ FilmTar* FilmTar::loadFromCSV(const std::string& file) {
     FilmTar* tar = new FilmTar();
     std::ifstream f(file.c_str());
     if (!f.is_open()) {
-        if (!f.is_open()) {
-            std::cerr << "Figyelmezetes: '" << file << "' nem talalhato, ures tarral indul." << std::endl;
-            return tar;
-        }
+        std::cerr << "Figyelmezetes: '" << file << "' nem talalhato, ures tarral indul." << std::endl;
+        return tar;
     }
     std::string sor;
     while (getline(f, sor)) {
